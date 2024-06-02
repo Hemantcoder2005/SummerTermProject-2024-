@@ -2,8 +2,8 @@
 In this Repo we will create ECE Bot for ECE lab IIIT Delhi
 
 ## Team Members
-Hemant Narula
-AnanT  Gyan Sinhjal
+- Hemant Narula
+- Anant Gyan Sinhjal
 
 ## Materials Required
 1. Raspberry Pi-4 Model B
