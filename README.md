@@ -3,11 +3,11 @@ In this Repo we will create ECE Bot for ECE lab IIIT Delhi
 
 ## Team Members
 - Hemant Narula
-- Anant Gyan Sinhjal
+- Anant Gyan Singhal
 
 ## Materials Required
 1. Raspberry Pi-4 Model B
-2. 3 ultrasonic sensors (HC-SR04) / lidar sensor
+2. 3 ultrasonic sensors (HC-SR04)
 3. 2 motors
 4. Motor Driver (L298N)
 5. Chasis
@@ -16,7 +16,7 @@ In this Repo we will create ECE Bot for ECE lab IIIT Delhi
 8. lithium-ion battery
 9. Jumper Wires
 10. breadboard
-11. Display 
-12. Camera
+11. Display(TFT) 
+12. Camera(Logitech C270)
 13. Speaker
 14. Microphone
