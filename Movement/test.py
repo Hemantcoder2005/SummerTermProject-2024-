@@ -25,8 +25,10 @@ def measure_distance(trigger, echo):
     GPIO.output(trigger, False)
     start, stop = time.time(), time.time()
     while GPIO.input(echo) == 0:
+        print("0: ", GPIO.input(18))
         start = time.time()
     while GPIO.input(echo) == 1:
+        print("1:", GPIO.input(18))
         stop = time.time()
     elapsed = stop - start
     distance = elapsed * 34000 / 2
@@ -41,7 +43,7 @@ while True:
         print("right = ",measure_distance(33,35))
         print("left = ",measure_distance(38,40))
         print('\n')
-        print(GPIO.input(18))
+        
         print(GPIO.input(16))
         # if GPIO.input(18) == GPIO.LOW:
         #     print("Sensor is connected.")
