@@ -3,10 +3,10 @@ import time
 
 # Define GPIO pin numbers for the ultrasonic sensors
 # Adjust these pin numbers according to your setup
-sensors = [
-    {'trigger': 17, 'echo': 18},  # Sensor 1
-    {'trigger': 22, 'echo': 23},  # Sensor 2
-    {'trigger': 24, 'echo': 25}   # Sensor 3
+sensors = [ 
+    {'trigger': 16, 'echo': 18},
+  {'trigger': 33, 'echo': 35},
+     {'trigger': 38, 'echo': 40}
 ]
 
 def setup():
