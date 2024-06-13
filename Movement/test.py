@@ -11,7 +11,11 @@ for sensor in SENSOR_PINS.values():
     GPIO.setup(sensor['trigger'], GPIO.OUT)
     GPIO.setup(sensor['echo'], GPIO.IN)
 
-
+def cleargpios():
+    print("clearing GPIO")
+    for sensor in SENSOR_PINS.values():
+        GPIO.output(sensor['trigger'], False)
+    print("All GPIOs CLEARED")
 def measure_distance(trigger, echo):
     GPIO.output(trigger, False)
     time.sleep(0.2)
@@ -25,8 +29,17 @@ def measure_distance(trigger, echo):
         stop = time.time()
     elapsed = stop - start
     distance = elapsed * 34000 / 2
-    print(distance)
     return distance
 
 while True:
-    measure_distance(16,18)
+    try:
+        print('\n')
+        print("Central = ",measure_distance(16,18))
+        print("right = ",measure_distance(33,35))
+        print("left = ",measure_distance(38,40))
+        print('\n')
+
+    except KeyboardInterrupt:
+        print("Clearing All gpios Pins")
+        cleargpios()
+        break
