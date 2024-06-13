@@ -4,9 +4,10 @@ import time
 GPIO.setmode(GPIO.BOARD)
 
 SENSOR_PINS = {
-    'central': {'trigger': 16, 'echo': 18}
+    'central': {'trigger': 16, 'echo': 18},
+    'right': {'trigger': 33, 'echo': 35},
+    'left': {'trigger': 38, 'echo': 40}
 }
-
 for sensor in SENSOR_PINS.values():
     GPIO.setup(sensor['trigger'], GPIO.OUT)
     GPIO.setup(sensor['echo'], GPIO.IN)
