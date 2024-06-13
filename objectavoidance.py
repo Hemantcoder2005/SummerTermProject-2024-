@@ -32,22 +32,27 @@ def set_motor_state(forward_left, forward_right, backward_left, backward_right):
     GPIO.output(MOTOR_PINS['backward_right'], backward_right)
 
 def goforward():
+    print("Forward")
     set_motor_state(True, True, False, False)
 
 def gobackward():
+    print("back")
     set_motor_state(False, False, True, True)
 
 def turnleft():
+    print("left")
     set_motor_state(True, False, False, False)
     time.sleep(0.8)
     set_motor_state(False, False, False, False)
 
 def turnright():
+    print("right")
     set_motor_state(False, True, False, False)
     time.sleep(0.8)
     set_motor_state(False, False, False, False)
 
 def stopmotors():
+    print("stop")
     set_motor_state(False, False, False, False)
 
 def measure_distance(trigger, echo):
@@ -63,15 +68,19 @@ def measure_distance(trigger, echo):
         stop = time.time()
     elapsed = stop - start
     distance = elapsed * 34000 / 2
+    print(distance)
     return distance
 
 def frontobstacle():
+    print("Front Sensor")
     return measure_distance(SENSOR_PINS['central']['trigger'], SENSOR_PINS['central']['echo'])
 
 def rightobstacle():
+    print("right Sensor")
     return measure_distance(SENSOR_PINS['right']['trigger'], SENSOR_PINS['right']['echo'])
 
 def leftobstacle():
+    print("left Sensor")
     return measure_distance(SENSOR_PINS['left']['trigger'], SENSOR_PINS['left']['echo'])
 
 def avoid_obstacle():

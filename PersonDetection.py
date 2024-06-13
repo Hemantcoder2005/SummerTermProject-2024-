@@ -65,8 +65,8 @@ while True:
                     if (encoderClass.findEncodings(extracted_Img)):
                         greet()
                         sound.play()
-            else:
-                print("Found!")
+                else:
+                    print("Found!")
 
     # Display the person count on the frame
     cv2.putText(img, f'Persons: {person_count}', (20, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
