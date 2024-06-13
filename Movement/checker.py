@@ -17,7 +17,7 @@ def setup():
 
 def check_sensor(sensor):
     GPIO.output(sensor['trigger'], False)
-    time.sleep(0.5)
+    time.sleep(0.01)  # Short delay to ensure previous pulse has ended
 
     # Send a 10us pulse to trigger
     GPIO.output(sensor['trigger'], True)
@@ -25,17 +25,22 @@ def check_sensor(sensor):
     GPIO.output(sensor['trigger'], False)
 
     # Measure response time
-    start_time = time.time()
+    start_time = time.monotonic()
+    pulse_start = 0
+    pulse_end = 0
+
+    # Wait for the echo to start
     while GPIO.input(sensor['echo']) == 0:
-        pulse_start = time.time()
+        pulse_start = time.monotonic()
         if pulse_start - start_time > 0.1:
-            print("Sensor not detected")
+            print("Sensor not detected - echo start timeout")
             return False
 
+    # Wait for the echo to end
     while GPIO.input(sensor['echo']) == 1:
-        pulse_end = time.time()
+        pulse_end = time.monotonic()
         if pulse_end - pulse_start > 0.1:
-            print("Sensor not detected")
+            print("Sensor not detected - echo end timeout")
             return False
 
     pulse_duration = pulse_end - pulse_start
@@ -44,6 +49,7 @@ def check_sensor(sensor):
 
     print(f"Sensor connected: Distance = {distance} cm")
     return True
+
 
 def main():
     setup()
