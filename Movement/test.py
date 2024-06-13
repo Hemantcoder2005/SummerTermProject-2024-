@@ -47,8 +47,8 @@ while True:
 
         print('\n')
         print("Central = ",measure_distance(16,18))
-        print("right = ",measure_distance(33,35))
-        print("left = ",measure_distance(38,40))
+        # print("right = ",measure_distance(33,35))
+        # print("left = ",measure_distance(38,40))
         print('\n')
         
         print(GPIO.input(16))
