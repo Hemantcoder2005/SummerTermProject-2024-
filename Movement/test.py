@@ -41,12 +41,14 @@ while True:
         print("right = ",measure_distance(33,35))
         print("left = ",measure_distance(38,40))
         print('\n')
-        if GPIO.input(18) == GPIO.LOW:
-            print("Sensor is connected.")
-        else:
-            print("Sensor is disconnected!")
-            cleargpios()
-            break
+        print(GPIO.input(18))
+        print(GPIO.input(16))
+        # if GPIO.input(18) == GPIO.LOW:
+        #     print("Sensor is connected.")
+        # else:
+        #     print("Sensor is disconnected!")
+        #     cleargpios()
+        #     break
     except KeyboardInterrupt:
         cleargpios()
         break
