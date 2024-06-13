@@ -19,16 +19,19 @@ def cleargpios():
     print("All GPIOs CLEARED")
 def measure_distance(trigger, echo):
     GPIO.output(trigger, False)
+    print("trigger1: ", GPIO.output(trigger))
     time.sleep(0.2)
     GPIO.output(trigger, True)
+    print("trigger2: ", GPIO.output(trigger))
     time.sleep(0.00001)
     GPIO.output(trigger, False)
+    print("trigger3: ", GPIO.output(trigger))
     start, stop = time.time(), time.time()
     while GPIO.input(echo) == 0:
-        print("0: ", GPIO.input(18))
+        # print("echo1: ", GPIO.input(18))
         start = time.time()
     while GPIO.input(echo) == 1:
-        print("1:", GPIO.input(18))
+        print("echo2:", GPIO.input(18))
         stop = time.time()
     elapsed = stop - start
     distance = elapsed * 34000 / 2
