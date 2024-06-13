@@ -31,7 +31,7 @@ def measure_distance(trigger, echo):
         start = time.time()
     while GPIO.input(echo) == 1:
         # print("trig2: ", GPIO.input(16))
-        # print("echo2:", GPIO.input(18))
+        print("-------------------echo2---------------------")
         stop = time.time()
         # print(stop - start)
     print("trig: ", GPIO.input(16))
