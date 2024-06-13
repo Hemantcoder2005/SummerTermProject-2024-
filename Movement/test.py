@@ -38,6 +38,7 @@ def measure_distance(trigger, echo):
     print("echo:", GPIO.input(18))
     elapsed = stop - start
     distance = elapsed * 34000 / 2
+
     return distance
 
 while True:
@@ -57,6 +58,7 @@ while True:
         #     print("Sensor is disconnected!")
         #     cleargpios()
         #     break
+        time.sleep(2)
     except KeyboardInterrupt:
         cleargpios()
         break
