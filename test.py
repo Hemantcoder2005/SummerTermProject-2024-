@@ -2,8 +2,6 @@ import RPi.GPIO as GPIO
 import time
 
 GPIO.setmode(GPIO.BOARD)
-for pin in MOTOR_PINS.values():
-    GPIO.setup(pin, GPIO.OUT)
 
 SENSOR_PINS = {
     'central': {'trigger': 16, 'echo': 18}
