@@ -30,7 +30,8 @@ def measure_distance(trigger, echo):
         print("echo1: ", GPIO.input(18))
         start = time.time()
     while GPIO.input(echo) == 1:
-        # print("echo2:", GPIO.input(18))
+        print("trig2: ", GPIO.input(16))
+        print("echo2:", GPIO.input(18))
         stop = time.time()
     elapsed = stop - start
     distance = elapsed * 34000 / 2
