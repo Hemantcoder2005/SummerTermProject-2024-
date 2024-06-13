@@ -34,19 +34,19 @@ def measure_distance(trigger, echo):
 
 while True:
     try:
-        if GPIO.input(16) == GPIO.LOW:
-            print("Sensor is connected.")
-        else:
-            print("Sensor is disconnected!")
-            cleargpios()
-            break
+        
 
         print('\n')
         print("Central = ",measure_distance(16,18))
         print("right = ",measure_distance(33,35))
         print("left = ",measure_distance(38,40))
         print('\n')
-
+        if GPIO.input(18) == GPIO.HIGH:
+            print("Sensor is connected.")
+        else:
+            print("Sensor is disconnected!")
+            cleargpios()
+            break
     except KeyboardInterrupt:
         cleargpios()
         break
