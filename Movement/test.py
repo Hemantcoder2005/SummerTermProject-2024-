@@ -31,7 +31,7 @@ def measure_distance(trigger, echo):
         start = time.time()
     while GPIO.input(echo) == 1:
         # print("trig2: ", GPIO.input(16))
-        print("-------------------echo2---------------------")
+        # print("-------------------echo2---------------------")
         stop = time.time()
         # print(stop - start)
     print("trig: ", GPIO.input(16))
@@ -47,8 +47,8 @@ while True:
 
         print('\n')
         print("Central = ",measure_distance(16,18))
-        # print("right = ",measure_distance(33,35))
-        # print("left = ",measure_distance(38,40))
+        print("right = ",measure_distance(33,35))
+        print("left = ",measure_distance(38,40))
         print('\n')
         
         print(GPIO.input(16))
@@ -58,7 +58,7 @@ while True:
         #     print("Sensor is disconnected!")
         #     cleargpios()
         #     break
-        time.sleep(2)
+        # time.sleep(2)
     except KeyboardInterrupt:
         cleargpios()
         break
