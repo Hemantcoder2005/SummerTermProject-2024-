@@ -9,7 +9,7 @@ MOTOR_PINS = {
     'forward_left': 11,
     'forward_right': 15,
     'backward_left': 37,
-    'backward_right': 13
+    'backward_right': 13    
 }
 
 # Setup
