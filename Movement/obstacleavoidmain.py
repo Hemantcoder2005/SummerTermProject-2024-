@@ -16,7 +16,7 @@ MOTOR_PINS = {
     'motora_in1': 11,
     'motora_in2': 13,
     'motorb_in3': 15,
-    'motorb_in4': 37  # Updated to avoid conflict with trigger pin 16
+    'motorb_in4': 37  
 }
 
 # Set GPIO direction (IN / OUT)
@@ -88,23 +88,29 @@ try:
         dist_right = distance(SENSOR_PINS['right']['trigger'], SENSOR_PINS['right']['echo'])
 
         print("Central: {:.2f} cm, Left: {:.2f} cm, Right: {:.2f} cm".format(dist_central, dist_left, dist_right))
-
+        print("moving forward")
         if dist_central < 20:
+            print("Obstacle detected")
             stop()
             if dist_left < dist_right:
                 right()
+                print("Turning right")
                 time.sleep(0.5)
             else:
                 left()
+                print("Turning left")
                 time.sleep(0.5)
         elif dist_left < 20:
             right()
+            print("Turning right")
             time.sleep(0.5)
         elif dist_right < 20:
             left()
+            print("Turning left")
             time.sleep(0.5)
         else:
             forward()
+            print("Moving forward")
 
         time.sleep(0.1)
 
