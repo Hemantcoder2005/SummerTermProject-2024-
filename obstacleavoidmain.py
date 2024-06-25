@@ -89,7 +89,7 @@ try:
 
         print("Central: {:.2f} cm, Left: {:.2f} cm, Right: {:.2f} cm".format(dist_central, dist_left, dist_right))
         print("moving forward")
-        if dist_central < 20:
+        if dist_central < 15:
             print("Obstacle detected")
             stop()
             if dist_left < dist_right:
@@ -100,11 +100,11 @@ try:
                 left()
                 print("Turning left")
                 time.sleep(0.5)
-        elif dist_left < 20:
+        elif dist_left < 15:
             right()
             print("Turning right")
             time.sleep(0.5)
-        elif dist_right < 20:
+        elif dist_right < 15:
             left()
             print("Turning left")
             time.sleep(0.5)
