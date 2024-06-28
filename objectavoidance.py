@@ -1,7 +1,7 @@
 import time
 import RPi.GPIO as GPIO
 
-# GPIO Mode (BOARD / BCM)
+# GPIO Mode (BOARD)
 GPIO.setmode(GPIO.BOARD)
 
 # Set GPIO Pins for Ultrasonic Sensors
@@ -89,10 +89,10 @@ try:
 
         print("Central: {:.2f} cm, Left: {:.2f} cm, Right: {:.2f} cm".format(dist_central, dist_left, dist_right))
         
-        if dist_central < 15:
+        if dist_central < 20:
             print("Obstacle detected")
             stop()
-            time.sleep(0.5)
+            time.sleep(0.1)
             if dist_left < dist_right:
                 right()
                 print("Turning right")
@@ -105,14 +105,16 @@ try:
             if dist_left < 20:
                 right()
                 print("Adjusting right to maintain distance from left")
+                time.sleep(0.1)
             elif dist_left > 30:
                 left()
                 print("Adjusting left to maintain distance from left")
+                time.sleep(0.1)
             else:
                 forward()
                 print("Moving forward, maintaining left lane distance")
 
-        time.sleep(0.1)
+        time.sleep(0.05)
 
 except KeyboardInterrupt:
     print("Measurement stopped by User")
