@@ -1,116 +1,119 @@
-import RPi.GPIO as GPIO
 import time
+import RPi.GPIO as GPIO
 
-# Define GPIO for Driver motors
-MOTOR_PINS = {
-    'forward_left': 11,
-    'forward_right': 15,
-    'backward_left': 37,
-    'backward_right': 13
-}
-
+# GPIO Mode (BOARD / BCM)
 GPIO.setmode(GPIO.BOARD)
-for pin in MOTOR_PINS.values():
-    GPIO.setup(pin, GPIO.OUT)
 
-# Define GPIO for ultrasonic sensors
+# Set GPIO Pins for Ultrasonic Sensors
 SENSOR_PINS = {
     'central': {'trigger': 16, 'echo': 18},
-    'right': {'trigger': 3 3, 'echo': 35},
+    'right': {'trigger': 33, 'echo': 35},
     'left': {'trigger': 38, 'echo': 40}
 }
 
+# Define GPIO for Driver motors
+MOTOR_PINS = {
+    'motora_in1': 11,
+    'motora_in2': 13,
+    'motorb_in3': 15,
+    'motorb_in4': 37  
+}
+
+# Set GPIO direction (IN / OUT)
 for sensor in SENSOR_PINS.values():
     GPIO.setup(sensor['trigger'], GPIO.OUT)
     GPIO.setup(sensor['echo'], GPIO.IN)
 
-# Functions for driving
-def set_motor_state(forward_left, forward_right, backward_left, backward_right):
-    GPIO.output(MOTOR_PINS['forward_left'], forward_left)
-    GPIO.output(MOTOR_PINS['forward_right'], forward_right)
-    GPIO.output(MOTOR_PINS['backward_left'], backward_left)
-    GPIO.output(MOTOR_PINS['backward_right'], backward_right)
+for pin in MOTOR_PINS.values():
+    GPIO.setup(pin, GPIO.OUT)
 
-def goforward():
-    set_motor_state(True, True, False, False)
-
-def gobackward():
-    set_motor_state(False, False, True, True)
-
-def turnleft():
-    set_motor_state(True, False, False, False)
-    time.sleep(0.8)
-    set_motor_state(False, False, False, False)
-
-def turnright():
-    set_motor_state(False, True, False, False)
-    time.sleep(0.8)
-    set_motor_state(False, False, False, False)
-
-def stopmotors():
-    set_motor_state(False, False, False, False)
-
-def measure_distance(trigger, echo):
+# Function to measure distance
+def distance(trigger, echo):
+    # Ensure trigger is low
     GPIO.output(trigger, False)
-    time.sleep(0.2)
+    time.sleep(0.05)
+
+    # Send a short 10us pulse to trigger
     GPIO.output(trigger, True)
     time.sleep(0.00001)
     GPIO.output(trigger, False)
-    start, stop = time.time(), time.time()
-    while GPIO.input(echo) == 0:
-        start = time.time()
-    while GPIO.input(echo) == 1:
-        stop = time.time()
-    elapsed = stop - start
-    distance = elapsed * 34000 / 2
-    return distance
 
-def frontobstacle():
-    return measure_distance(SENSOR_PINS['central']['trigger'], SENSOR_PINS['central']['echo'])
-
-def rightobstacle():
-    return measure_distance(SENSOR_PINS['right']['trigger'], SENSOR_PINS['right']['echo'])
-
-def leftobstacle():
-    return measure_distance(SENSOR_PINS['left']['trigger'], SENSOR_PINS['left']['echo'])
-
-def avoid_obstacle():
-    stopmotors()
-    left_dist = leftobstacle()
-    right_dist = rightobstacle()
-    if left_dist > right_dist:
-        turnleft()
-    else:
-        turnright()
-    goforward()
-
-def prefer_left_lane():
-    if frontobstacle() > 30 and leftobstacle() < rightobstacle():
-        turnleft()
-        goforward()
-
-def obstacleavoiddrive():
-    goforward()
     start_time = time.time()
-    while time.time() - start_time < 300:  # 300 seconds = 5 minutes
-        if frontobstacle() < 30:
-            avoid_obstacle()
+    stop_time = time.time()
+
+    # Save start_time
+    while GPIO.input(echo) == 0:
+        start_time = time.time()
+
+    # Save stop_time
+    while GPIO.input(echo) == 1:
+        stop_time = time.time()
+
+    # Time difference between start and arrival
+    elapsed_time = stop_time - start_time
+
+    # Calculate distance
+    dist = (elapsed_time * 34300) / 2
+    return dist
+
+
+# Functions for driving
+def set_motor_state(forward_left, backward_left, forward_right, backward_right):
+    GPIO.output(MOTOR_PINS['motora_in1'], forward_left)
+    GPIO.output(MOTOR_PINS['motora_in2'], backward_left)
+    GPIO.output(MOTOR_PINS['motorb_in3'], forward_right)
+    GPIO.output(MOTOR_PINS['motorb_in4'], backward_right)
+
+
+# Motor control functions
+def stop():
+    set_motor_state(False, False, False, False)
+
+def forward():
+    set_motor_state(True, False, True, False)
+
+def backward():
+    set_motor_state(False, True, False, True)
+
+def left():
+    set_motor_state(True, False, False, True)
+
+def right():
+    set_motor_state(False, True, True, False)
+
+try:
+    while True:
+        dist_central = distance(SENSOR_PINS['central']['trigger'], SENSOR_PINS['central']['echo'])
+        dist_left = distance(SENSOR_PINS['left']['trigger'], SENSOR_PINS['left']['echo'])
+        dist_right = distance(SENSOR_PINS['right']['trigger'], SENSOR_PINS['right']['echo'])
+
+        print("Central: {:.2f} cm, Left: {:.2f} cm, Right: {:.2f} cm".format(dist_central, dist_left, dist_right))
+        
+        if dist_central < 15:
+            print("Obstacle detected")
+            stop()
+            time.sleep(0.5)
+            if dist_left < dist_right:
+                right()
+                print("Turning right")
+                time.sleep(0.5)
+            else:
+                left()
+                print("Turning left")
+                time.sleep(0.5)
         else:
-            prefer_left_lane()
-    cleargpios()
+            if dist_left < 20:
+                right()
+                print("Adjusting right to maintain distance from left")
+            elif dist_left > 30:
+                left()
+                print("Adjusting left to maintain distance from left")
+            else:
+                forward()
+                print("Moving forward, maintaining left lane distance")
 
-def cleargpios():
-    print("clearing GPIO")
-    for pin in MOTOR_PINS.values():
-        GPIO.output(pin, False)
-    for sensor in SENSOR_PINS.values():
-        GPIO.output(sensor['trigger'], False)
-    print("All GPIOs CLEARED")
+        time.sleep(0.1)
 
-def main():
-    cleargpios()
-    print("start driving: ")
-    obstacleavoiddrive()
-
-if __name__ == "__main__":
-    main()
+except KeyboardInterrupt:
+    print("Measurement stopped by User")
+    GPIO.cleanup()
