@@ -92,6 +92,7 @@ try:
         if dist_central < 15:
             print("Obstacle detected")
             stop()
+            time.sleep(0.5)
             if dist_left < dist_right:
                 right()
                 print("Turning right")
