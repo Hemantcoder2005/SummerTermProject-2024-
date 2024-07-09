@@ -115,6 +115,6 @@ try:
 
         time.sleep(0.1)
 
-except KeyboardInterrupt:
+except KeyboardInterrupt:   
     print("Measurement stopped by User")
     GPIO.cleanup()
